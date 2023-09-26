@@ -6,6 +6,6 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-anyhow = "1"
-bitcoin = "0.29.2"
+anyhow = "1.0.75"
+bitcoin = "0.30.1"
 hex = "0.4.3"
