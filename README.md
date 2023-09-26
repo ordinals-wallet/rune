@@ -5,5 +5,5 @@ A reference implementation of the rune protocol. The goal of this project is to 
 ## Testing
 
 ```
-cargo run test
+cargo test
 ```
