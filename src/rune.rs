@@ -59,13 +59,17 @@ impl Rune {
             anyhow::bail!("Invalid Rune");
         }
 
-        if script::Instruction::PushBytes(b"R") != chunks[1] {
+        if let script::Instruction::PushBytes(bytes) = chunks[1] {
+            if bytes.as_bytes() != b"R" {
+                anyhow::bail!("Invalid Rune");
+            }
+        } else {
             anyhow::bail!("Invalid Rune");
         }
 
         let transfer_bytes: Vec<u8>;
         if let script::Instruction::PushBytes(bytes) = chunks[2] {
-            transfer_bytes = bytes.try_into().unwrap();
+            transfer_bytes = bytes.as_bytes().to_vec();
         } else {
             anyhow::bail!("Invalid Rune");
         }
@@ -84,7 +88,7 @@ impl Rune {
         if op == RuneOp::Issuance {
             let issuance_bytes: Vec<u8>;
             if let script::Instruction::PushBytes(bytes) = chunks[3] {
-                issuance_bytes = bytes.try_into().unwrap();
+                issuance_bytes = bytes.as_bytes().to_vec();
             } else {
                 anyhow::bail!("Invalid Rune");
             }
@@ -109,17 +113,17 @@ impl Rune {
         })
     }
 
-    pub fn transfer_script(id: u64, output_index: u64, amount: u64) -> Vec<u8> {
+    pub fn transfer_script(id: u64, output_index: u64, amount: u64) -> script::PushBytesBuf {
         let mut data = VarInt::get_bytes(id);
         data.append(&mut VarInt::get_bytes(output_index));
         data.append(&mut VarInt::get_bytes(amount));
-        data
+        script::PushBytesBuf::try_from(data).unwrap()
     }
 
-    pub fn issuance_script(symbol: u64, decimals: u64) -> Vec<u8> {
+    pub fn issuance_script(symbol: u64, decimals: u64) -> script::PushBytesBuf {
         let mut data = VarInt::get_bytes(symbol);
         data.append(&mut VarInt::get_bytes(decimals));
-        data
+        script::PushBytesBuf::try_from(data).unwrap()
     }
 
     pub async fn issuance_outputs(
