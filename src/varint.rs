@@ -2,13 +2,13 @@ pub struct VarInt {}
 
 impl VarInt {
     pub fn get_bytes(length: u64) -> Vec<u8> {
-        if length <= 252 {
+        if length <= 0xfc {
             vec![length as u8]
-        } else if length <= 0xff {
+        } else if length <= (1<<16)-1 {
             let mut push1 = vec![0xfd];
             push1.extend((length as u16).to_le_bytes());
             push1
-        } else if length <= 0xffff {
+        } else if length <= (1<<32)-1 {
             let mut push2 = vec![0xfe];
             push2.extend((length as u32).to_le_bytes());
             push2
