@@ -23,7 +23,7 @@ pub struct Rune {
 
 impl Rune {
     pub fn name(self) -> String {
-        let base26_chars = "ABCDEFGHIJKLMNOPQRSTUVXYZ".chars().collect::<Vec<_>>();
+        let base26_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".chars().collect::<Vec<_>>();
         let name = self
             .symbol
             .unwrap()
