@@ -14,12 +14,12 @@ Let's examine the hex of the first ordinalswallet rune tx. See https://mempool.s
 
 #### ScriptPubKey
 The rune data is provided within the ScriptPubKey section, introduced by the OP_RETURN opcode, 0x6a. It is divided into substrings by OP_PUSHBYTES opcodes, here 0x01, 0x0b, 0x0a: 
-01520b0001ff00752b7d000000000aff987806010000000012
+0601520b0001ff00752b7d000000000aff987806010000000012
 = OP_RETURN 01 52 0b 0001ff00752b7d00000000 0a ff987806010000000012
 -> datapush R, datapush transfer, datapush issuance
 
 All rune tx start their ScriptPubKey with 1 pushbyte encoding the letter R in hex:  
-0x 01 52  
+- 0x 01 52  
 = OP_PUSHBYTES_1 52  
 = R  
 
