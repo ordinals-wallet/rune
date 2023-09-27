@@ -8,6 +8,15 @@ A reference implementation of the rune protocol. The goal of this project is to 
 cargo test
 ```
 
+## Other Implementations
+
+- https://runescan.space/ (web)
+- https://geniidata.com/user/poshi/rune-index (web)
+- https://github.com/alphabatem/btc_rune (GO)
+- https://github.com/Anarkoic/runes (Python)
+- https://gist.github.com/revofusion/ba74dc11e0b007feba84b7b492e5ee87 (Javascript)
+- https://github.com/rot13maxi/ruin (Rust)
+
 ## Example 
 
 Let's examine the hex of the first ordinalswallet rune tx. See https://mempool.space/api/tx/1aa98283f61cea9125aea58441067baca2533e2bbf8218b5e4f9ef7b8c0d8c30/hex  
@@ -45,8 +54,3 @@ How to decode the _Symbol_ pushstring: ff 98 78 06 01 00 00 00 00
 17 20 13 04  
 = RUNE   
 
-## Other Implementations
-
-- https://github.com/Anarkoic/runes
-- https://gist.github.com/revofusion/ba74dc11e0b007feba84b7b492e5ee87
-- https://github.com/rot13maxi/ruin
