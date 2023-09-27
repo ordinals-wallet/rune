@@ -13,11 +13,12 @@ cargo test
 Let's examine the hex of the first ordinalswallet rune tx. See https://mempool.space/api/tx/1aa98283f61cea9125aea58441067baca2533e2bbf8218b5e4f9ef7b8c0d8c30/hex  
 
 #### ScriptPubKey
-The rune data is provided within the ScriptPubKey section:  
-- 01520b0001ff00752b7d000000000aff987806010000000012  
-- The string is introduced by the OP_RETURN opcode, 0x6a. It is divided into substrings by OP_PUSHBYTES opcodes.  
+The rune data is provided within the ScriptPubKey section, introduced by the OP_RETURN opcode, 0x6a. It is divided into substrings by OP_PUSHBYTES opcodes, here 0x01, 0x0b, 0x0a: 
+01520b0001ff00752b7d000000000aff987806010000000012
+= OP_RETURN 01 52 0b 0001ff00752b7d00000000 0a ff987806010000000012
+-> datapush R, datapush transfer, datapush issuance
 
-- All rune tx start their ScriptPubKey with 1 pushbyte encoding the letter R in hex:  
+All rune tx start their ScriptPubKey with 1 pushbyte encoding the letter R in hex:  
 0x 01 52  
 = OP_PUSHBYTES_1 52  
 = R  
