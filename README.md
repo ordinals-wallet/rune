@@ -18,24 +18,24 @@ The rune data is provided within the ScriptPubKey section, introduced by the OP_
 = OP_RETURN 01 52 0b 0001ff00752b7d00000000 0a ff987806010000000012
 -> datapush R, datapush transfer, datapush issuance
 
-All rune tx start their ScriptPubKey with 1 pushbyte encoding the letter R in hex:  
+**R:** All rune tx start their ScriptPubKey with 1 pushbyte encoding the letter **R** in hex:  
 - 0x 01 52  
 = OP_PUSHBYTES_1 52  
 = R  
 
-This is followed by a _transfer_ data push:  
+**transfer:** This is followed by a **transfer** data push:  
 - 0x 0b 0001ff00752b7d00000000  
 = OP_PUSHBYTES_11 00 01 ff 00 75 2b 7d 00 00 00 00  
 = 00, 01, 00 00 00 00 7d 2b 75 00  
 = _ID (hex)_ 0, _OUTPUT (hex)_ 1, _AMOUNT (varint)_ 21000000  
 
-In a mint tx this is then followed by an additional _issuance_ data push:  
+**issuance:** In a mint tx this is then followed by an additional **issuance** data push:  
 - 0x 0a ff987806010000000012  
 = OP_PUSHBYTES_10 ff 98 78 06 01 00 00 00 00 12  
 = 00 00 00 00 01 06 78 98, 12  
 = _SYMBOL (base26)_ RUNE, _DECIMALS (hex)_ 18  
 
-Note that the ordinalswallet implementation is encoding the _Symbol_ through Base64 and varint into little endian!  
+**Note** that the ordinalswallet implementation is encoding the _Symbol_ through Base64 and varint into little endian!  
 How to decode the _Symbol_ pushstring: ff 98 78 06 01 00 00 00 00  
 - 0xff tells us the next 8 bytes are little endian, which means we need to swap them around:  
 00 00 00 00 01 06 78 98  
