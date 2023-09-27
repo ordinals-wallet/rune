@@ -190,6 +190,24 @@ mod tests {
     }
 
     #[test]
+    fn test_804c299bad4457daeab28c5227d36c3920d92b98dc73e4f37fe1497956d91469() {
+        // https://mempool.space/tx/804c299bad4457daeab28c5227d36c3920d92b98dc73e4f37fe1497956d91469
+        let rawtx = "01000000000101a616ebcf5b79993bd58fdf5830663bbb792d99c292350492857ba3d293887ba70300000000ffffffff040000000000000000126a0152030001450affe083e50000000000122202000000000000225120faae2eb2f5a9baa41050f8e2799115722cd3c9b683ea6f33e0a11caf764faa21f824010000000000225120f667578b85bed256c7fcb9f2cda488d5281e52ca42e7dd4bc21e95149562f09f9083030000000000225120045f0270cab3fd9be9c1e7b78686244ccc5b001db145ae3d9678ee254a576a0a0140ca3ed829cf459dd4fec05945eb2b215caab468105cd081b46c0f7061a005f727c5b50407d8c10494bda121b95c9097534bc3b201d93cec3c75515eef24d6623300000000";
+        let tx: Transaction =
+            bitcoin::consensus::encode::deserialize(&hex::decode(rawtx).unwrap()).unwrap();
+
+        let rune = Rune::from_tx(tx).unwrap();
+
+        assert_eq!(rune.op, RuneOp::Issuance);
+        assert_eq!(rune.amount, 69);
+        assert_eq!(rune.output_index, 1);
+        assert_eq!(rune.id, 0);
+        assert_eq!(rune.symbol, Some(15041504));
+        assert_eq!(rune.decimals, Some(18));
+        assert_eq!(rune.name(), "PEPE".to_string());
+    }
+
+    #[test]
     fn test_2aefe2887654b3e4e7addd8f7c6496c26110833342830c19babda8d3875072ea() {
         // https://twitter.com/revofusion/status/1706533725230792974
         // https://mempool.space/tx/2aefe2887654b3e4e7addd8f7c6496c26110833342830c19babda8d3875072ea

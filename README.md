@@ -7,3 +7,7 @@ A reference implementation of the rune protocol. The goal of this project is to 
 ```
 cargo test
 ```
+
+## Other Implementations
+
+- https://github.com/Anarkoic/runes
