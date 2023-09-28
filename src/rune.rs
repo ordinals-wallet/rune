@@ -14,11 +14,11 @@ pub enum RuneOp {
 #[derive(Debug)]
 pub struct Rune {
     pub op: RuneOp,
-    pub amount: u64,
-    pub output_index: u64,
-    pub id: u64,
-    pub decimals: Option<u64>,
-    pub symbol: Option<u64>,
+    pub amount: u128,
+    pub output_index: u128,
+    pub id: u128,
+    pub decimals: Option<u128>,
+    pub symbol: Option<u128>,
 }
 
 impl Rune {
@@ -33,7 +33,7 @@ impl Rune {
             .chunks(2)
             .map(|e| {
                 let value = e.iter().collect::<String>();
-                let num = value.parse::<u64>().unwrap();
+                let num = value.parse::<u128>().unwrap();
                 base26_chars[num as usize]
             })
             .collect::<String>();
@@ -75,12 +75,12 @@ impl Rune {
         }
 
         let mut offset;
-        let (id, id_offset) = VarInt::read_bytes(transfer_bytes.clone());
+        let (id, id_offset) = bitcoin_varint::decode(&transfer_bytes)?;
         offset = id_offset as usize;
         let (output_index, output_index_offset) =
-            VarInt::read_bytes((&transfer_bytes[offset..]).try_into().unwrap());
+            bitcoin_varint::decode((&transfer_bytes[offset..]).try_into().unwrap())?;
         offset = offset + output_index_offset as usize;
-        let (amount, _) = VarInt::read_bytes(transfer_bytes[offset..].try_into().unwrap());
+        let (amount, _) = bitcoin_varint::decode(transfer_bytes[offset..].try_into().unwrap())?;
 
         let mut symbol = None;
         let mut decimals = None;
@@ -94,10 +94,10 @@ impl Rune {
             }
 
             let offset;
-            let (symbol_int, symbol_offset) = VarInt::read_bytes(issuance_bytes.clone());
+            let (symbol_int, symbol_offset) = bitcoin_varint::decode(&issuance_bytes)?;
             offset = symbol_offset as usize;
             let (decimals_int, _) =
-                VarInt::read_bytes(issuance_bytes[offset..].try_into().unwrap());
+                bitcoin_varint::decode(issuance_bytes[offset..].try_into().unwrap())?;
 
             symbol = Some(symbol_int);
             decimals = Some(decimals_int);
@@ -113,23 +113,23 @@ impl Rune {
         })
     }
 
-    pub fn transfer_script(id: u64, output_index: u64, amount: u64) -> script::PushBytesBuf {
-        let mut data = VarInt::get_bytes(id);
-        data.append(&mut VarInt::get_bytes(output_index));
-        data.append(&mut VarInt::get_bytes(amount));
+    pub fn transfer_script(id: u128, output_index: u128, amount: u128) -> script::PushBytesBuf {
+        let mut data = bitcoin_varint::encode(id);
+        data.append(&mut bitcoin_varint::encode(output_index));
+        data.append(&mut bitcoin_varint::encode(amount));
         script::PushBytesBuf::try_from(data).unwrap()
     }
 
-    pub fn issuance_script(symbol: u64, decimals: u64) -> script::PushBytesBuf {
-        let mut data = VarInt::get_bytes(symbol);
-        data.append(&mut VarInt::get_bytes(decimals));
+    pub fn issuance_script(symbol: u128, decimals: u128) -> script::PushBytesBuf {
+        let mut data = bitcoin_varint::encode(symbol);
+        data.append(&mut bitcoin_varint::encode(decimals));
         script::PushBytesBuf::try_from(data).unwrap()
     }
 
     pub async fn issuance_outputs(
-        symbol: u64,
-        decimals: u64,
-        amount: u64,
+        symbol: u128,
+        decimals: u128,
+        amount: u128,
         to: Address,
     ) -> Result<Vec<TxOut>> {
         let outputs = vec![
@@ -151,7 +151,7 @@ impl Rune {
         Ok(outputs)
     }
 
-    pub async fn transfer_outputs(amount: u64, to: Address) -> Result<Vec<TxOut>> {
+    pub async fn transfer_outputs(amount: u128, to: Address) -> Result<Vec<TxOut>> {
         let outputs = vec![
             TxOut {
                 value: 0,
